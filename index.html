@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Clientes - Loja</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    input {
+      margin: 5px 0;
+      padding: 5px;
+      width: 200px;
+    }
+    button {
+      padding: 6px 12px;
+    }
+    .cliente {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cadastro de Clientes - Loja Tech</h1>
+
+  <form id="formCadastro">
+    <label>Nome: <br><input type="text" id="nome" required></label><br>
+    <label>Idade: <br><input type="number" id="idade" required></label><br>
+    <label>E-mail: <br><input type="email" id="email" required></label><br>
+    <button type="submit">Cadastrar Cliente</button>
+  </form>
+
+  <h2>Clientes Cadastrados:</h2>
+  <div id="listaClientes"></div>
+
+  <script>
+    // Classe Cliente
+    class Cliente {
+      constructor(nome, idade, email) {
+        this.nome = nome;
+        this.idade = idade;
+        this.email = email;
+      }
+
+      exibirDados() {
+        return `Nome: ${this.nome}, Idade: ${this.idade}, E-mail: ${this.email}`;
+      }
+    }
+
+    // Classe Loja
+    class Loja {
+      constructor(nome) {
+        this.nome = nome;
+        this.clientes = [];
+      }
+
+      cadastrarCliente(cliente) {
+        this.clientes.push(cliente);
+      }
+
+      exibirClientes() {
+        const lista = document.getElementById("listaClientes");
+        lista.innerHTML = ""; // limpa a lista antes de exibir novamente
+
+        this.clientes.forEach(cliente => {
+          const div = document.createElement("div");
+          div.className = "cliente";
+          div.textContent = cliente.exibirDados();
+          lista.appendChild(div);
+        });
+      }
+    }
+
+    // Criando a loja
+    const minhaLoja = new Loja("Loja Tech");
+
+    // Lógica do formulário
+    const form = document.getElementById("formCadastro");
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const nome = document.getElementById("nome").value;
+      const idade = parseInt(document.getElementById("idade").value);
+      const email = document.getElementById("email").value;
+
+      const novoCliente = new Cliente(nome, idade, email);
+      minhaLoja.cadastrarCliente(novoCliente);
+      minhaLoja.exibirClientes();
+
+      form.reset(); // limpa o formulário
+    });
+  </script>
+</body>
+</html>
